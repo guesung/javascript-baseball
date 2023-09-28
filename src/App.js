@@ -60,6 +60,33 @@ class App {
     const regexr = /^\d{3}$/
     return regexr.test(value)
   }
+
+  // 3. 컴퓨터 숫자와 사용자 숫자 비교
+  matchComputerVSUser(computerNumberList, userNumberList) {
+    // 1. 숫자 & 위치가 동일한 경우 : 스트라이크
+    // 2. 숫자가 동일한 경우(includes) : 볼
+    // 1,2가 모두 없는 경우 : 낫싱
+    // 1,2가 모두 있는 경우 : 3스트라이크 & 게임 종료
+
+    const strikeCount = this.getStrikeCount(computerNumberList, userNumberList)
+    const ballCount = this.getBallCount(computerNumberList, userNumberList)
+
+    return { strikeCount, ballCount }
+  }
+  getStrikeCount(computerNumberList, userNumberList) {
+    let strikeCount = 0;
+    for (let i = 0; i < 3; i++) {
+      if (computerNumberList[i] === userNumberList[i]) strikeCount++;
+    }
+    return strikeCount;
+  }
+  getBallCount(computerNumberList, userNumberList) {
+    let ballCount = 0;
+    for (let i = 0; i < 3; i++) {
+      if (computerNumberList.includes(userNumberList[i]) && computerNumberList[i] !== userNumberList[i]) ballCount++;
+    }
+    return ballCount;
+  }
 }
 
 module.exports = App;
