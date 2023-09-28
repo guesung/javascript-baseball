@@ -43,6 +43,23 @@ class App {
     return isReplay
   }
 
+  // 2.1. 사용자 값 입력받기
+  getUserNumberList() {
+    let userInput;
+    MissionUtils.Console.readLine("숫자를 입력해주세요 : ", (input) => {
+      const isValid = this.checkValidation(input)
+      if (isValid) userInput = input;
+      else throw new Error("잘못된 값을 입력하였습니다.")
+    });
+    return userInput.split('').map(it => +it)
+  }
+
+  // 2.2. 사용자 값 
+
+  checkValidation(value) {
+    const regexr = /^\d{3}$/
+    return regexr.test(value)
+  }
 }
 
 module.exports = App;
