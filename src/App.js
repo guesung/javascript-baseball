@@ -2,6 +2,7 @@ const { Console } = require('@woowacourse/mission-utils');
 const Messages = require('./constants/Messages');
 const matchComputerVSUser = require('./utils/matchComputerVSUser');
 const InputView = require('./InputView');
+const OutputView = require('./OutputView');
 
 class App {
   isReplay = true;
@@ -20,15 +21,10 @@ class App {
           computerNumber,
           userNumber,
         );
-        Console.print(
-          `${ballCount ? `${ballCount}${Messages.GUESS_GONG_RESULT_BALL}` : ''} ${strikeCount
-            ? `${strikeCount}${Messages.GUESS_GONG_RESULT_STRIKE}`
-            : ''
-          }`,
-        );
+        OutputView.printResult({ strikeCount, ballCount });
+
         if (strikeCount === 3) {
-          Console.print(Messages.GUESS_GONG_RESULT_SUCCESS);
-          Console.print(Messages.REPLAY);
+          OutputView.PrintSucessResult();
           Console.readLine('', (input) => {
             if (input === '1') return;
             if (input === '2') this.isReplay = false;
