@@ -1,8 +1,7 @@
 const { Console } = require('@woowacourse/mission-utils');
 const Messages = require('./constants/Messages');
-const getUserNumber = require('./utils/getUserNumber');
-const getComputerNumber = require('./utils/getComputerNumber');
 const matchComputerVSUser = require('./utils/matchComputerVSUser');
+const InputView = require('./InputView');
 
 class App {
   isReplay = true;
@@ -14,9 +13,9 @@ class App {
 
   gameStart() {
     while (this.isReplay) {
-      const computerNumber = getComputerNumber();
+      const computerNumber = InputView.getComputerNumber();
       while (1) {
-        const userNumber = getUserNumber();
+        const userNumber = InputView.getUserNumber();
         const { strikeCount, ballCount } = matchComputerVSUser(
           computerNumber,
           userNumber,
