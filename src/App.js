@@ -1,9 +1,10 @@
 const MissionUtils = require("@woowacourse/mission-utils");
+const Messages = require("./constants/Messages");
 
 class App {
   play() {
     while (1) {
-      MissionUtils.Console.print("숫자 야구 게임을 시작합니다.");
+      MissionUtils.Console.print(Messages.GAME_START);
       const computerNumberList = this.getRandomNumberList();
       const isReplay = this.doPlay(computerNumberList);
       if (!isReplay) break;
@@ -11,7 +12,7 @@ class App {
   }
 
   // 1. 컴퓨터 숫자값 선택하기
-  static getRandomNumberList() {
+  getRandomNumberList() {
     const computerNumberList = [];
     while (computerNumberList.length < 3) {
       const randomNumber = MissionUtils.Random.pickNumberInRange(1, 10);
@@ -31,14 +32,14 @@ class App {
         userNumberList,
       );
       MissionUtils.Console.print(
-        `${ballCount ? `${ballCount}볼` : ""} ${strikeCount ? `${strikeCount}스트라이크` : ""
+        `${ballCount ? `${ballCount}${Messages.GUESS_GONG_RESULT_BALL}` : ""} ${strikeCount
+          ? `${strikeCount}${Messages.GUESS_GONG_RESULT_STRIKE}`
+          : ""
         }`,
       );
       if (strikeCount === 3) {
-        MissionUtils.Console.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-        MissionUtils.Console.print(
-          "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.",
-        );
+        MissionUtils.Console.print(Messages.GUESS_GONG_RESULT_SUCCESS);
+        MissionUtils.Console.print(Messages.REPLAY);
         MissionUtils.Console.readLine("", (input) => {
           if (input === "1") isReplay = true;
           else if (input === "2") isReplay = false;
@@ -46,7 +47,7 @@ class App {
         });
       }
       if (strikeCount === 0 && ballCount === 0)
-        MissionUtils.Console.print("낫싱");
+        MissionUtils.Console.print(Messages.GUESS_GONG_RESULT_NOTHING);
     }
     return isReplay;
   }
@@ -54,17 +55,17 @@ class App {
   // 2.1. 사용자 값 입력받기
   getUserNumberList() {
     let userInput;
-    MissionUtils.Console.readLine("숫자를 입력해주세요 : ", (input) => {
+    MissionUtils.Console.readLine(Messages.INPUT_YOUR_GONG, (input) => {
       const isValid = this.checkValidation(input);
       if (isValid) userInput = input;
-      else throw new Error("잘못된 값을 입력하였습니다.");
+      else throw new Error(Messages.WRONG_INPUT);
     });
     return userInput.split("").map((it) => +it);
   }
 
   // 2.2. 사용자 값
 
-  static checkValidation(value) {
+  checkValidation(value) {
     const regexr = /^\d{3}$/;
     return regexr.test(value);
   }
@@ -82,7 +83,7 @@ class App {
     return { strikeCount, ballCount };
   }
 
-  static getStrikeCount(computerNumberList, userNumberList) {
+  getStrikeCount(computerNumberList, userNumberList) {
     let strikeCount = 0;
     for (let i = 0; i < 3; i += 1) {
       if (computerNumberList[i] === userNumberList[i]) strikeCount += 1;
@@ -90,7 +91,7 @@ class App {
     return strikeCount;
   }
 
-  static getBallCount(computerNumberList, userNumberList) {
+  getBallCount(computerNumberList, userNumberList) {
     let ballCount = 0;
     for (let i = 0; i < 3; i += 1) {
       if (
