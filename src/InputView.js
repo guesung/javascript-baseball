@@ -1,10 +1,8 @@
 const { Console, Random } = require('@woowacourse/mission-utils');
 const Messages = require('./constants/Messages');
+const Regexr = require('./constants/Regexr');
 
-const checkValidation = (value) => {
-  this.regexr = /^\d{3}$/;
-  return this.regexr.test(value);
-};
+const checkValidation = (value) => Regexr.gong.test(value);
 
 class InputView {
   static getUserNumber() {
